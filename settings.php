@@ -24,7 +24,7 @@
  */
 
 
-$quizsettings->add(new admin_setting_configcheckbox('quizaccess_ajaxcheck/ajaxcheck',
+$settings->add(new admin_setting_configcheckbox('quizaccess_ajaxcheck/ajaxcheck',
     get_string('ajaxcheck', 'quizaccess_ajaxcheck'),
     get_string('ajaxcheck_help', 'quizaccess_ajaxcheck'),
     0));
