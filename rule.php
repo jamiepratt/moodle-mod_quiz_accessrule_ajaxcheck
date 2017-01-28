@@ -47,12 +47,12 @@ class quizaccess_ajaxcheck extends quiz_access_rule_base {
 
     public static function add_settings_form_fields(
             mod_quiz_mod_form $quizform, MoodleQuickForm $mform) {
-        $mform->addElement($mform->createElement('selectyesno', 'ajaxcheck',
-            get_string('ajaxcheck', 'quizaccess_ajaxcheck')));
+        // Add element at the end of 'Appearance' field set.
+        $mform->insertElementBefore($mform->createElement('selectyesno', 'ajaxcheck',
+            get_string('ajaxcheck', 'quizaccess_ajaxcheck')), 'security');
 
         $mform->setDefault('ajaxcheck', get_config('quizaccess_ajaxcheck', 'ajaxcheck'));
-        $mform->addHelpButton('ajaxcheck',
-                'ajaxcheck', 'quizaccess_ajaxcheck');
+        $mform->addHelpButton('ajaxcheck', 'ajaxcheck', 'quizaccess_ajaxcheck');
     }
 
     public static function save_settings($quiz) {
