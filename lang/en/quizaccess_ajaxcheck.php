@@ -17,8 +17,7 @@
 /**
  * Strings for the quizaccess_ajaxcheck plugin.
  *
- * @package   quizaccess
- * @subpackage ajaxcheck
+ * @package    quizaccess_ajaxcheck
  * @copyright 2017 Jamie Pratt (me@jamiep.org)
  * @license   http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
@@ -31,3 +30,4 @@ $string['ajaxcheck'] = 'Check student response using AJAX';
 $string['ajaxcheck_help'] = 'If you enable this option, when students take the quiz and press the Check button '.
                             'their answer is checked using AJAX.';
 $string['pluginname'] = 'AJAX for student response checking';
+$string['checking'] = 'Checking.....';

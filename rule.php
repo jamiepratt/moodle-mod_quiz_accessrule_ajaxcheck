@@ -17,8 +17,7 @@
 /**
  * Implementaton of the quizaccess_ajaxcheck plugin.
  *
- * @package   quizaccess
- * @subpackage ajaxcheck
+ * @package    quizaccess_ajaxcheck
  * @copyright 2017 Jamie Pratt (me@jamiep.org)
  * @license   http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
@@ -75,5 +74,10 @@ class quizaccess_ajaxcheck extends quiz_access_rule_base {
             'COALESCE(ajaxcheck, 0) AS ajaxcheck',// Using COALESCE to replace NULL with 0.
             'LEFT JOIN {quizaccess_ajaxcheck} qa_gbc ON qa_gbc.quizid = quiz.id',
             array());
+    }
+
+    public function setup_attempt_page($page) {
+        $page->requires->js_call_amd('quizaccess_ajaxcheck/ajaxcheck', 'setup',
+                                        array(get_string('checking', 'quizaccess_ajaxcheck')));
     }
 }

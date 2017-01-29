@@ -17,8 +17,7 @@
 /**
  * Version information for the quizaccess_ajaxcheck plugin.
  *
- * @package   quizaccess
- * @subpackage ajaxcheck
+ * @package    quizaccess_ajaxcheck
  * @copyright 2017 Jamie Pratt (me@jamiep.org)
  * @license   http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
@@ -27,7 +26,7 @@
 defined('MOODLE_INTERNAL') || die();
 
 
-$plugin->version   = 2017012800;
+$plugin->version   = 2017012801;
 $plugin->requires  = 2016120500;
 $plugin->cron      = 0;
 $plugin->component = 'quizaccess_ajaxcheck';
