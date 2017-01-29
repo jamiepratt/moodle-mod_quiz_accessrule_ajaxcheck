@@ -30,7 +30,8 @@ require_once($CFG->dirroot . '/mod/quiz/accessrule/accessrulebase.php');
 
 
 /**
- * A rule requiring the student to promise not to cheat.
+ * This 'rule' plugin is not really a rule. It is using the quiz rule plug in functionality to allow a user to
+ * choose per quiz whether to use ajax to process student responses to questions when the 'Check' button is pressed.
  *
  * @copyright 2017 Jamie Pratt (me@jamiep.org)
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
