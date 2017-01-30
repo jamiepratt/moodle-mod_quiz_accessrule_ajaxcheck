@@ -26,7 +26,7 @@
 defined('MOODLE_INTERNAL') || die();
 
 
-$plugin->version   = 2017012801;
+$plugin->version   = 2017012802;
 $plugin->requires  = 2016120500;
 $plugin->cron      = 0;
 $plugin->component = 'quizaccess_ajaxcheck';

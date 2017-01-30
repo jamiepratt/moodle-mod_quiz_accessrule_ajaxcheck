@@ -29,15 +29,8 @@ $functions = array(
                 'classpath'   => 'mod/quiz/accessrule/ajaxcheck/externallib.php',
                 'description' => 'submit question data and check question',
                 'type'        => 'read',
-                'ajax'        => true
+                'ajax'        => true,
+                'services' => array('quiz access ajax check ajax ws')
         )
 );
 
-// We define the services to install as pre-build services. A pre-build service is not editable by administrator.
-$services = array(
-        'quiz access ajax check ajax ws' => array(
-                'functions' => array ('quizaccess_ajaxcheck_external'),
-                'restrictedusers' => 0,
-                'enabled'=>1,
-        )
-);
