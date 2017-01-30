@@ -30,7 +30,26 @@ $functions = array(
                 'description' => 'submit question data and check question',
                 'type'        => 'read',
                 'ajax'        => true,
-                'services' => array('quiz access ajax check ajax ws')
-        )
+                'services'    => array('quiz access ajax check ajax ws')
+        ),
+        'quizaccess_ajaxcheck_process_attempt' => array(
+            'classname'     => 'mod_quiz_external',
+            'methodname'    => 'process_attempt',
+            'description'   => 'Process responses during an attempt at a quiz and also deals with attempts finishing.',
+            'type'          => 'write',
+            'capabilities'  => 'mod/quiz:attempt',
+            'ajax'          => true,
+            'services'      => array('quiz access ajax check ajax ws')
+        ),
+        'quizaccess_ajaxcheck_get_attempt_data' => array(
+            'classname'     => 'mod_quiz_external',
+            'methodname'    => 'get_attempt_data',
+            'description'   => 'Returns information for the given attempt page for a quiz attempt in progress.',
+            'type'          => 'read',
+            'capabilities'  => 'mod/quiz:attempt',
+            'ajax'          => true,
+            'services'      => array('quiz access ajax check ajax ws')
+        ),
+
 );
 

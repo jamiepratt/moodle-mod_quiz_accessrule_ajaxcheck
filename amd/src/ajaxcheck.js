@@ -8,25 +8,20 @@ define(['jquery', 'core/ajax'], function($, ajax) {
         return $('div#q' + slot + ' div.outcome');
     };
 
+    var question_div = function (slot) {
+        return $('div#q' + slot);
+    };
+
     var process_ajax_response = function (response) {
         console.log("Yay. 'qtype_ebox_check_question' web service call suceeded. Response :", response);
-        for (var i = 0; i < response.outcomes.length; i++) {
-            var outcome = response.outcomes[i];
-            var outcomediv = outcome_div(outcome.slot);
-            if (outcomediv.length) {
-                outcomediv.html(outcome.outcome);
-            } else {
-                $('div#q' + outcome.slot + ' div.content').append(
-                    '<div class="outcome clearfix" style="display: none;">' + outcome.outcome + '</div>'
-                );
-            }
-            outcome_div(outcome.slot).slideDown('slow');
-            $('div#q' + outcome.slot + ' input.submit').removeProp('disabled');
-            $('div#q' + outcome.slot + ' input.submit').prop('value', checkstring);
-            $("body").css("cursor", "default");
-            $('input[name="' + outcome.fieldprefix + ':sequencecheck"]').val(outcome.sequencecheck);
+        for (var i = 0; i < response.questions.length; i++) {
+            var question = response.questions[i];
+            question_div(question.slot).replaceWith(question.html);
 
+            outcome_div(question.slot).slideDown('slow');
+            $("body").css("cursor", "default");
         }
+        submit_buttons().click(submit_button_click);
     };
 
     var submit_button_click = function (event) {
@@ -39,10 +34,10 @@ define(['jquery', 'core/ajax'], function($, ajax) {
             checkstring = $(event.target).prop('value');
             $(event.target).prop('value', checkingstring);
             var attemptid = null;
-            var slots = null;
+            var page = null;
             for (var i = 0; i < formdata.length; i++) {
-                if (formdata[i].name == 'slots') {
-                    slots = formdata[i].value;
+                if (formdata[i].name == 'thispage') {
+                    page = formdata[i].value;
                 } else if (formdata[i].name == 'attempt') {
                     attemptid = formdata[i].value;
                 } else if (/^q[0-9]+:[0-9]+_[-a-z]+$/.test(formdata[i].name)) {
@@ -50,23 +45,37 @@ define(['jquery', 'core/ajax'], function($, ajax) {
                     $('div#q' + nameparts[1] + ' div.outcome').hide();
                 }
             }
-            console.log(attemptid, slots, formdata);
+            console.log(attemptid, page, formdata);
             var wscalls = ajax.call([
                 {
-                    methodname: 'quizaccess_ajaxcheck_check_question',
+                    methodname: 'quizaccess_ajaxcheck_process_attempt',
                     args: {
                         attemptid: attemptid,
-                        slots: slots,
-                        formdata: formdata
+                        data: formdata
+                    }
+                },
+                {
+                    methodname: 'quizaccess_ajaxcheck_get_attempt_data',
+                    args: {
+                        attemptid: attemptid,
+                        page: page
                     }
                 }
             ]);
-            wscalls[0].done(process_ajax_response)
-                .fail(function (ex) {
+            wscalls[0].fail(
+                function (ex) {
                     console.log("Oops. " +
-                        "'qtype_ebox_check_question' web service call failed. " +
+                        "'quizaccess_ajaxcheck_process_attempt' web service call failed. " +
                         "Exception :", ex);
                 });
+            wscalls[1].done(process_ajax_response)
+                .fail(
+                function (ex) {
+                    console.log("Oops. " +
+                        "'quizaccess_ajaxcheck_get_attempt_data' web service call failed. " +
+                        "Exception :", ex);
+                });
+
         }
 
     };
