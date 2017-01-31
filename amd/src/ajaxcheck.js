@@ -17,7 +17,7 @@ define(['jquery', 'core/ajax', 'core/notification'], function($, ajax, notificat
             var question = response.questions[i];
             question_div(question.slot).replaceWith(question.html);
 
-            outcome_div(question.slot).slideDown('slow');
+            outcome_div(question.slot).hide().slideDown('slow');
             $("body").css("cursor", "default");
         }
         submit_buttons().click(submit_button_click);
@@ -38,9 +38,6 @@ define(['jquery', 'core/ajax', 'core/notification'], function($, ajax, notificat
                     page = formdata[i].value;
                 } else if (formdata[i].name == 'attempt') {
                     attemptid = formdata[i].value;
-                } else if (/^q[0-9]+:[0-9]+_[-a-z]+$/.test(formdata[i].name)) {
-                    var nameparts = /^q[0-9]+:([0-9]+)_([-a-z]+)$/.exec(formdata[i].name);
-                    $('div#q' + nameparts[1] + ' div.outcome').hide();
                 }
             }
             var wscalls = ajax.call([
