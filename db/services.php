@@ -23,6 +23,14 @@
 
 // We defined the web service functions to install.
 $functions = array(
+        'quizaccess_ajaxcheck_get_navigation_panel_html' => array(
+                'classname'   => 'quizaccess_ajaxcheck_external',
+                'methodname'  => 'get_navigation_panel_html',
+                'description' => 'get html code for navigation panel',
+                'type'        => 'read',
+                'ajax'        => true,
+                'services'    => array('quiz access ajax check ajax ws')
+        ),
         'quizaccess_ajaxcheck_process_attempt' => array(
             'classname'     => 'mod_quiz_external',
             'methodname'    => 'process_attempt',

@@ -12,7 +12,7 @@ define(['jquery', 'core/ajax', 'core/notification'], function($, ajax, notificat
         return $('div#q' + slot);
     };
 
-    var process_ajax_response = function (response) {
+    var replace_question_slot_html = function (response) {
         for (var i = 0; i < response.questions.length; i++) {
             var question = response.questions[i];
             question_div(question.slot).replaceWith(question.html);
@@ -21,6 +21,12 @@ define(['jquery', 'core/ajax', 'core/notification'], function($, ajax, notificat
             $("body").css("cursor", "default");
         }
         submit_buttons().click(submit_button_click);
+    };
+
+    var replace_navigation_panel_html = function (response) {
+
+        $("#mod_quiz_navblock div.content").html(response.navigationpanelhtml);
+
     };
 
     var submit_button_click = function (event) {
@@ -54,10 +60,18 @@ define(['jquery', 'core/ajax', 'core/notification'], function($, ajax, notificat
                         attemptid: attemptid,
                         page: page
                     }
+                },
+                {
+                    methodname: 'quizaccess_ajaxcheck_get_navigation_panel_html',
+                    args: {
+                        attemptid: attemptid,
+                        page: page
+                    }
                 }
             ]);
             wscalls[0].fail(notification.exception);
-            wscalls[1].done(process_ajax_response).fail(notification.exception);
+            wscalls[1].done(replace_question_slot_html).fail(notification.exception);
+            wscalls[2].done(replace_navigation_panel_html).fail(notification.exception);
 
         }
 
