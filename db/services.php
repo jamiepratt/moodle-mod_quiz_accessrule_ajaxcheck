@@ -23,15 +23,6 @@
 
 // We defined the web service functions to install.
 $functions = array(
-        'quizaccess_ajaxcheck_check_question' => array(
-                'classname'   => 'quizaccess_ajaxcheck_external',
-                'methodname'  => 'check_question',
-                'classpath'   => 'mod/quiz/accessrule/ajaxcheck/externallib.php',
-                'description' => 'submit question data and check question',
-                'type'        => 'read',
-                'ajax'        => true,
-                'services'    => array('quiz access ajax check ajax ws')
-        ),
         'quizaccess_ajaxcheck_process_attempt' => array(
             'classname'     => 'mod_quiz_external',
             'methodname'    => 'process_attempt',
