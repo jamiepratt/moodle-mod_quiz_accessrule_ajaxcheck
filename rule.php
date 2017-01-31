@@ -77,7 +77,9 @@ class quizaccess_ajaxcheck extends quiz_access_rule_base {
     }
 
     public function setup_attempt_page($page) {
-        $page->requires->js_call_amd('quizaccess_ajaxcheck/ajaxcheck', 'setup',
-                                        array(get_string('checking', 'quizaccess_ajaxcheck')));
+        if ('mod-quiz-attempt' == $page->pagetype) {
+            $page->requires->js_call_amd('quizaccess_ajaxcheck/ajaxcheck', 'setup',
+                array(get_string('checking', 'quizaccess_ajaxcheck')));
+        }
     }
 }
