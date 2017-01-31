@@ -1,4 +1,4 @@
-define(['jquery', 'core/ajax'], function($, ajax) {
+define(['jquery', 'core/ajax', 'core/notification'], function($, ajax, notification) {
 
     var submit_buttons = function () {
         return $('div.que input.submit');
@@ -13,7 +13,6 @@ define(['jquery', 'core/ajax'], function($, ajax) {
     };
 
     var process_ajax_response = function (response) {
-        console.log("Yay. 'qtype_ebox_check_question' web service call suceeded. Response :", response);
         for (var i = 0; i < response.questions.length; i++) {
             var question = response.questions[i];
             question_div(question.slot).replaceWith(question.html);
@@ -31,7 +30,6 @@ define(['jquery', 'core/ajax'], function($, ajax) {
             formdata.push({name: event.target.name, value: event.target.value});
             $("body").css("cursor", "progress");
             $(event.target).prop('disabled', 'disabled');
-            checkstring = $(event.target).prop('value');
             $(event.target).prop('value', checkingstring);
             var attemptid = null;
             var page = null;
@@ -45,7 +43,6 @@ define(['jquery', 'core/ajax'], function($, ajax) {
                     $('div#q' + nameparts[1] + ' div.outcome').hide();
                 }
             }
-            console.log(attemptid, page, formdata);
             var wscalls = ajax.call([
                 {
                     methodname: 'quizaccess_ajaxcheck_process_attempt',
@@ -62,25 +59,13 @@ define(['jquery', 'core/ajax'], function($, ajax) {
                     }
                 }
             ]);
-            wscalls[0].fail(
-                function (ex) {
-                    console.log("Oops. " +
-                        "'quizaccess_ajaxcheck_process_attempt' web service call failed. " +
-                        "Exception :", ex);
-                });
-            wscalls[1].done(process_ajax_response)
-                .fail(
-                function (ex) {
-                    console.log("Oops. " +
-                        "'quizaccess_ajaxcheck_get_attempt_data' web service call failed. " +
-                        "Exception :", ex);
-                });
+            wscalls[0].fail(notification.exception);
+            wscalls[1].done(process_ajax_response).fail(notification.exception);
 
         }
 
     };
 
-    var checkstring;
     var checkingstring;
 
     var setup = function (checkingstringarg) {
@@ -88,5 +73,5 @@ define(['jquery', 'core/ajax'], function($, ajax) {
         submit_buttons().click(submit_button_click);
     };
 
-    return {setup : setup}
+    return {setup : setup};
 });
