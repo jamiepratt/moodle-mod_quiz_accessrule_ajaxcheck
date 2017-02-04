@@ -28,6 +28,12 @@ defined('MOODLE_INTERNAL') || die();
 
 $string['ajaxcheck'] = 'Check student response using AJAX';
 $string['ajaxcheck_help'] = 'If you enable this option, when students take the quiz and press the Check button '.
-                            'their answer is checked using AJAX.';
+    'their answer is checked using AJAX.';
+$string['ajaxcheckdefault_help'] = 'When creating a new quiz should the quiz use AJAX by default? Can be overridden on '.
+                                    'a per quiz basis in the Appearance section of the Quiz settings.';
 $string['pluginname'] = 'AJAX for student response checking';
 $string['checking'] = 'Checking.....';
+$string['qtypewhitelist'] = 'Use AJAX with these question types';
+$string['qtypewhitelist_help'] = 'The JS code in some question types is broken by ajax that changes the html in the '.
+                            'page. This setting allows us to enable question types that work with our ajax. The options '.
+                            'enabled by default should work with the AJAX.';

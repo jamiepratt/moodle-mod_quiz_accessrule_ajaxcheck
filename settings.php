@@ -26,5 +26,18 @@
 
 $settings->add(new admin_setting_configcheckbox('quizaccess_ajaxcheck/ajaxcheck',
     get_string('ajaxcheck', 'quizaccess_ajaxcheck'),
-    get_string('ajaxcheck_help', 'quizaccess_ajaxcheck'),
+    get_string('ajaxcheckdefault_help', 'quizaccess_ajaxcheck'),
     0));
+
+$qtypes = core_component::get_plugin_list('qtype');
+unset($qtypes['random']);
+unset($qtypes['missingtype']);
+$qtypechoices = array_combine(array_keys($qtypes), array_keys($qtypes));
+
+$settings->add(new admin_setting_configmulticheckbox('quizaccess_ajaxcheck/whitelist',
+    get_string('qtypewhitelist', 'quizaccess_ajaxcheck'),
+    get_string('qtypewhitelist_help', 'quizaccess_ajaxcheck'),
+    array('calculated' => 1, 'calculatedmulti' => 1, 'calculatedsimple' => 1, 'ddmarker'=> 1,
+        'gapselect'=> 1,  'match'=> 1, 'multianswer'=> 1,
+        'multichoice'=> 1,  'numerical'=> 1,  'randomsamatch'=> 1,  'shortanswer'=> 1,  'truefalse'=> 1),
+    $qtypechoices));
