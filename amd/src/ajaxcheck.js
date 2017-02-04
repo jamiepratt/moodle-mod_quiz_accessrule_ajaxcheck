@@ -1,4 +1,4 @@
-define(['jquery', 'core/ajax', 'core/notification'], function($, ajax, notification) {
+define(['jquery', 'core/ajax', 'core/notification', 'core/event'], function($, ajax, notification, event) {
 
     var submit_buttons = function () {
         return $('div.que input.submit');
@@ -16,6 +16,7 @@ define(['jquery', 'core/ajax', 'core/notification'], function($, ajax, notificat
         for (var i = 0; i < response.questions.length; i++) {
             var question = response.questions[i];
             question_div(question.slot).replaceWith(question.html);
+            event.notifyFilterContentUpdated($(question_div(question.slot)));
 
             outcome_div(question.slot).hide().slideDown('slow');
             $("body").css("cursor", "default");
@@ -26,7 +27,6 @@ define(['jquery', 'core/ajax', 'core/notification'], function($, ajax, notificat
     var replace_navigation_panel_html = function (response) {
 
         $("#mod_quiz_navblock div.content").html(response.navigationpanelhtml);
-
     };
 
     var submit_button_click = function (event) {
