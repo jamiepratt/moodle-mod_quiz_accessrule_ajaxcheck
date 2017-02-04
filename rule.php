@@ -78,8 +78,11 @@ class quizaccess_ajaxcheck extends quiz_access_rule_base {
 
     public function setup_attempt_page($page) {
         if ('mod-quiz-attempt' == $page->pagetype) {
+            $whitelist = explode(',', get_config('quizaccess_ajaxcheck', 'whitelist'));
+
+
             $page->requires->js_call_amd('quizaccess_ajaxcheck/ajaxcheck', 'setup',
-                array(get_string('checking', 'quizaccess_ajaxcheck')));
+                            array(get_string('checking', 'quizaccess_ajaxcheck'), $whitelist));
         }
     }
 }

@@ -15,13 +15,15 @@ define(['jquery', 'core/ajax', 'core/notification', 'core/event'], function($, a
     var replace_question_slot_html = function (response) {
         for (var i = 0; i < response.questions.length; i++) {
             var question = response.questions[i];
-            question_div(question.slot).replaceWith(question.html);
-            event.notifyFilterContentUpdated($(question_div(question.slot)));
+            if (question_white_listed(question_div(question.slot))) {
+                question_div(question.slot).replaceWith(question.html);
+                event.notifyFilterContentUpdated($(question_div(question.slot)));
 
-            outcome_div(question.slot).hide().slideDown('slow');
-            $("body").css("cursor", "default");
+                outcome_div(question.slot).hide().slideDown('slow');
+                $("body").css("cursor", "default");
+            }
         }
-        submit_buttons().click(submit_button_click);
+        click_for_whitelisted_qs();
     };
 
     var replace_navigation_panel_html = function (response) {
@@ -77,11 +79,27 @@ define(['jquery', 'core/ajax', 'core/notification', 'core/event'], function($, a
 
     };
 
-    var checkingstring;
+    var question_white_listed = function (qdiv) {
+        //second class name in div.que is qtype
+        var qtype = $(qdiv).attr('class').split(' ')[1];
+        return ($.inArray(qtype, whitelist) !== -1);
+    };
 
-    var setup = function (checkingstringarg) {
+    var click_for_whitelisted_qs = function () {
+        submit_buttons().each(function() {
+            if (question_white_listed($(this).closest('div.que'))){
+                $(this).click(submit_button_click);
+            }
+        });
+    };
+
+    var checkingstring;
+    var whitelist;
+
+    var setup = function (checkingstringarg, whitelistarg) {
         checkingstring = checkingstringarg;
-        submit_buttons().click(submit_button_click);
+        whitelist = whitelistarg;
+        click_for_whitelisted_qs();
     };
 
     return {setup : setup};
