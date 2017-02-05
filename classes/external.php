@@ -89,4 +89,64 @@ class quizaccess_ajaxcheck_external extends mod_quiz_external {
         );
     }
 
+
+    /**
+     * Describes the parameters for get_question_html.
+     *
+     * @return external_function_parameters
+     * @since Moodle 3.1
+     */
+    public static function get_question_html_parameters() {
+        return new external_function_parameters (
+            array(
+                'attemptid' => new external_value(PARAM_INT, 'attempt id'),
+                'slot' => new external_value(PARAM_INT, 'question slot number'),
+            )
+        );
+    }
+
+    /**
+     * Returns information for the given attempt page for a quiz attempt in progress.
+     *
+     * @param int $attemptid attempt id
+     * @param int  $slot  integer slot number
+     * @return array of warnings and messages, the question html
+     * @throws moodle_quiz_exceptions
+     */
+    public static function get_question_html($attemptid, $slot) {
+        global $PAGE;
+
+        $params = array(
+            'attemptid' => $attemptid,
+            'slot' => $slot
+        );
+        $params = self::validate_parameters(self::get_question_html_parameters(), $params);
+
+        list($attemptobj, ) = self::validate_attempt($params);
+
+        $renderer = $PAGE->get_renderer('mod_quiz');
+
+        $question = array(
+            'slot' => $slot,
+            'html' => $attemptobj->render_question($slot, false, $renderer) . $PAGE->requires->get_end_code()
+        );
+
+        return $question;
+    }
+
+    /**
+     * Describes the get_question_html return value.
+     *
+     * @return external_single_structure
+     * @since Moodle 3.1
+     */
+    public static function get_question_html_returns() {
+        return new external_single_structure(
+            array(
+                'slot' => new external_value(PARAM_INT, 'slot number'),
+                'html' => new external_value(PARAM_RAW, 'the question rendered'),
+            )
+        );
+    }
+
 }

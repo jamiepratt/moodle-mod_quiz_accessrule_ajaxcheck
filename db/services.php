@@ -40,10 +40,10 @@ $functions = array(
             'ajax'          => true,
             'services'      => array('quiz access ajax check ajax ws')
         ),
-        'quizaccess_ajaxcheck_get_attempt_data' => array(
-            'classname'     => 'mod_quiz_external',
-            'methodname'    => 'get_attempt_data',
-            'description'   => 'Returns information for the given attempt page for a quiz attempt in progress.',
+        'quizaccess_ajaxcheck_get_question_html' => array(
+            'classname'     => 'quizaccess_ajaxcheck_external',
+            'methodname'    => 'get_question_html',
+            'description'   => 'Returns html for a given question in a slot for a quiz attempt in progress',
             'type'          => 'read',
             'capabilities'  => 'mod/quiz:attempt',
             'ajax'          => true,

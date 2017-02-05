@@ -13,16 +13,10 @@ define(['jquery', 'core/ajax', 'core/notification', 'core/event'], function($, a
     };
 
     var replace_question_slot_html = function (response) {
-        for (var i = 0; i < response.questions.length; i++) {
-            var question = response.questions[i];
-            if (question_white_listed(question_div(question.slot))) {
-                question_div(question.slot).replaceWith(question.html);
-                event.notifyFilterContentUpdated($(question_div(question.slot)));
-
-                outcome_div(question.slot).hide().slideDown('slow');
-                $("body").css("cursor", "default");
-            }
-        }
+        question_div(response.slot).replaceWith(response.html);
+        event.notifyFilterContentUpdated($(question_div(response.slot)));
+        outcome_div(response.slot).hide().slideDown('slow');
+        $("body").css("cursor", "default");
         click_for_whitelisted_qs();
     };
 
@@ -48,6 +42,7 @@ define(['jquery', 'core/ajax', 'core/notification', 'core/event'], function($, a
                     attemptid = formdata[i].value;
                 }
             }
+            var submitbuttonslot = Number($(event.target).closest('div.que').attr('id').substring(1));
             var wscalls = ajax.call([
                 {
                     methodname: 'quizaccess_ajaxcheck_process_attempt',
@@ -57,10 +52,10 @@ define(['jquery', 'core/ajax', 'core/notification', 'core/event'], function($, a
                     }
                 },
                 {
-                    methodname: 'quizaccess_ajaxcheck_get_attempt_data',
+                    methodname: 'quizaccess_ajaxcheck_get_question_html',
                     args: {
                         attemptid: attemptid,
-                        page: page
+                        slot: submitbuttonslot
                     }
                 },
                 {
