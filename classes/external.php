@@ -100,7 +100,8 @@ class quizaccess_ajaxcheck_external extends mod_quiz_external {
         return new external_function_parameters (
             array(
                 'attemptid' => new external_value(PARAM_INT, 'attempt id'),
-                'slot' => new external_value(PARAM_INT, 'question slot number'),
+                'page' => new external_value(PARAM_INT, 'page number'),
+                'submitbuttonslot' => new external_value(PARAM_INT, 'question slot number')
             )
         );
     }
@@ -109,16 +110,18 @@ class quizaccess_ajaxcheck_external extends mod_quiz_external {
      * Returns information for the given attempt page for a quiz attempt in progress.
      *
      * @param int $attemptid attempt id
-     * @param int  $slot  integer slot number
+     * @param int $page page number
+     * @param int  $submitbuttonslot  integer slot number
      * @return array of warnings and messages, the question html
      * @throws moodle_quiz_exceptions
      */
-    public static function get_question_html($attemptid, $slot) {
+    public static function get_question_html($attemptid, $page, $submitbuttonslot) {
         global $PAGE;
 
         $params = array(
             'attemptid' => $attemptid,
-            'slot' => $slot
+            'page' => $page,
+            'submitbuttonslot' => $submitbuttonslot
         );
         $params = self::validate_parameters(self::get_question_html_parameters(), $params);
 
@@ -126,12 +129,25 @@ class quizaccess_ajaxcheck_external extends mod_quiz_external {
 
         $renderer = $PAGE->get_renderer('mod_quiz');
 
-        $question = array(
-            'slot' => $slot,
-            'html' => $attemptobj->render_question($slot, false, $renderer) . $PAGE->requires->get_end_code()
+        $wsreturns = array(
+            'slot' => $submitbuttonslot,
+            'html' => $attemptobj->render_question($submitbuttonslot, false, $renderer) . $PAGE->requires->get_end_code()
         );
 
-        return $question;
+        $wsreturns['sequencechecks'] = array();
+
+        foreach ($attemptobj->get_slots($page) as $slot) {
+            if ($slot != $submitbuttonslot) {
+                $qa = $attemptobj->get_question_attempt($slot);
+                $questionsequencecheck = array(
+                    'sequencecheck' => $qa->get_sequence_check_count(),
+                    'fieldprefix' => $qa->get_field_prefix()
+                );
+                $wsreturns['sequencechecks'][] = $questionsequencecheck;
+            }
+        }
+
+        return $wsreturns;
     }
 
     /**
@@ -145,6 +161,14 @@ class quizaccess_ajaxcheck_external extends mod_quiz_external {
             array(
                 'slot' => new external_value(PARAM_INT, 'slot number'),
                 'html' => new external_value(PARAM_RAW, 'the question rendered'),
+                'sequencechecks' => new external_multiple_structure(
+                    new external_single_structure(
+                        array(
+                            'fieldprefix' => new external_value(PARAM_RAW, 'fieldprefix'),
+                            'sequencecheck' => new external_value(PARAM_INT, 'sequence check no'),
+                        )
+                    ), 'Sequence check data after saved question', VALUE_DEFAULT, array()
+                )
             )
         );
     }

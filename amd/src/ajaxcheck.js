@@ -18,6 +18,13 @@ define(['jquery', 'core/ajax', 'core/notification', 'core/event'], function($, a
         outcome_div(response.slot).hide().slideDown('slow');
         $("body").css("cursor", "default");
         click_for_whitelisted_qs();
+        for (var i = 0; i < response.sequencechecks.length; i++) {
+            var sequencecheck = response.sequencechecks[i].sequencecheck;
+            var fieldprefix = response.sequencechecks[i].fieldprefix;
+
+            $('input[name="' + fieldprefix + ':sequencecheck"]').val(sequencecheck);
+
+        }
     };
 
     var replace_navigation_panel_html = function (response) {
@@ -55,7 +62,8 @@ define(['jquery', 'core/ajax', 'core/notification', 'core/event'], function($, a
                     methodname: 'quizaccess_ajaxcheck_get_question_html',
                     args: {
                         attemptid: attemptid,
-                        slot: submitbuttonslot
+                        page: page,
+                        submitbuttonslot: submitbuttonslot
                     }
                 },
                 {
