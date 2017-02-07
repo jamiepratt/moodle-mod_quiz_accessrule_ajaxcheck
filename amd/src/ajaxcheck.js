@@ -21,8 +21,9 @@ define(['jquery', 'core/ajax', 'core/notification', 'core/event'], function($, a
         for (var i = 0; i < response.sequencechecks.length; i++) {
             var sequencecheck = response.sequencechecks[i].sequencecheck;
             var fieldprefix = response.sequencechecks[i].fieldprefix;
-
-            $('input[name="' + fieldprefix + ':sequencecheck"]').val(sequencecheck);
+            var sequencecheckinput = $('input[name="' + fieldprefix + ':sequencecheck"]');
+            sequencecheckinput.addClass('ignoredirty');
+            sequencecheckinput.val(sequencecheck);
 
         }
     };
@@ -92,6 +93,8 @@ define(['jquery', 'core/ajax', 'core/notification', 'core/event'], function($, a
         submit_buttons().each(function() {
             if (question_white_listed($(this).closest('div.que'))){
                 $(this).click(submit_button_click);
+                //tell formchangechecker to ignore changes made to label of submit button.
+                $(this).addClass('ignoredirty');
             }
         });
     };
