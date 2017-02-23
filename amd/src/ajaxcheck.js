@@ -1,4 +1,5 @@
-define(['jquery', 'core/ajax', 'core/notification', 'core/event'], function($, ajax, notification, event) {
+define(['jquery', 'core/ajax', 'core/notification', 'core/event', 'core/yui'],
+    function($, ajax, notification, event, Y) {
 
     var submit_buttons = function () {
         return $('div.que input.submit');
@@ -78,6 +79,10 @@ define(['jquery', 'core/ajax', 'core/notification', 'core/event'], function($, a
             wscalls[0].fail(notification.exception);
             wscalls[1].done(replace_question_slot_html).fail(notification.exception);
             wscalls[2].done(replace_navigation_panel_html).fail(notification.exception);
+
+            Y.use('moodle-core-formchangechecker', function() {
+                M.core_formchangechecker.reset_form_dirty_state();
+            });
 
         }
 
