@@ -137,14 +137,12 @@ class quizaccess_ajaxcheck_external extends mod_quiz_external {
         $wsreturns['sequencechecks'] = array();
 
         foreach ($attemptobj->get_slots($page) as $slot) {
-            if ($slot != $submitbuttonslot) {
-                $qa = $attemptobj->get_question_attempt($slot);
-                $questionsequencecheck = array(
-                    'sequencecheck' => $qa->get_sequence_check_count(),
-                    'fieldprefix' => $qa->get_field_prefix()
-                );
-                $wsreturns['sequencechecks'][] = $questionsequencecheck;
-            }
+            $qa = $attemptobj->get_question_attempt($slot);
+            $questionsequencecheck = array(
+                'sequencecheck' => $qa->get_sequence_check_count(),
+                'fieldprefix' => $qa->get_field_prefix()
+            );
+            $wsreturns['sequencechecks'][] = $questionsequencecheck;
         }
 
         return $wsreturns;
