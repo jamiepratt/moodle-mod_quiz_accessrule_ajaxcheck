@@ -18,7 +18,7 @@ define(['jquery', 'core/ajax', 'core/notification', 'core/event', 'core/yui'],
         event.notifyFilterContentUpdated($(question_div(response.slot)));
         outcome_div(response.slot).hide().slideDown('slow');
         $("body").css("cursor", "default");
-        click_for_whitelisted_qs();
+        $('div#q' + response.slot+' input.submit').click(submit_button_click);
         for (var i = 0; i < response.sequencechecks.length; i++) {
             var sequencecheck = response.sequencechecks[i].sequencecheck;
             var fieldprefix = response.sequencechecks[i].fieldprefix;
